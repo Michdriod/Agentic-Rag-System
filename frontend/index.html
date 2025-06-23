@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic RAG System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Agentic RAG System</h1>
+        
+        <div class="search-container">
+            <input type="text" id="queryInput" placeholder="Enter your query...">
+            <button onclick="getSuggestions()">Get Suggestions</button>
+        </div>
+
+        <div id="suggestions" class="suggestions-container"></div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing your query...</p>
+        </div>
+    </div>
+
+    <script>
+        async function getSuggestions() {
+            const queryInput = document.getElementById('queryInput');
+            const suggestionsContainer = document.getElementById('suggestions');
+            const loading = document.getElementById('loading');
+
+            if (!queryInput.value.trim()) {
+                alert('Please enter a query');
+                return;
+            }
+
+            try {
+                loading.style.display = 'flex';
+                suggestionsContainer.innerHTML = '';
+
+                const response = await fetch('/suggestions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: queryInput.value }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch suggestions');
+                }
+
+                const data = await response.json();
+                
+                data.suggestions.forEach(suggestion => {
+                    const card = document.createElement('div');
+                    card.className = 'suggestion-card';
+                    card.innerHTML = `
+                        <p>${suggestion.suggestion}</p>
+                        <div class="confidence">Confidence: ${suggestion.confidence}</div>
+                    `;
+                    suggestionsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching suggestions');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Enable Enter key to submit
+        document.getElementById('queryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getSuggestions();
+            }
+        });
+    </script>
+</body>
+</html>

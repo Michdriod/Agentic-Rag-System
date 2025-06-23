@@ -1,0 +1,18 @@
+Based on these similar transactions:
+
+{descriptions}
+
+Generate 3 concise, natural language suggestions.
+Each suggestion should:
+- Be on a new line
+- Be actionable and specific
+- Avoid repetition
+- Be grounded in the provided data
+
+Instructions:
+- Match the user's query intent to relevant transaction entries.
+- Return 3 varied yet relevant completions that could satisfy the user's request.
+- Each suggestion must be a full response (not just fragments), written for a human to read.
+
+Use only data retrieved from the database.
+
