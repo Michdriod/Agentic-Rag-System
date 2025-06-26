@@ -1,1 +1,1 @@
-select * FROM transaction_insights LIMIT 10;
+select * FROM transaction_insights LIMIT 20;

@@ -13,6 +13,7 @@
         <div class="search-container">
             <input type="text" id="queryInput" placeholder="Enter your query...">
             <button onclick="getSuggestions()">Get Suggestions</button>
+            <button onclick="getQueryAnswer()">Ask Query</button>
         </div>
 
         <div id="suggestions" class="suggestions-container"></div>
@@ -64,6 +65,48 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while fetching suggestions');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function getQueryAnswer() {
+            const queryInput = document.getElementById('queryInput');
+            const suggestionsContainer = document.getElementById('suggestions');
+            const loading = document.getElementById('loading');
+
+            if (!queryInput.value.trim()) {
+                alert('Please enter a query');
+                return;
+            }
+
+            try {
+                loading.style.display = 'flex';
+                suggestionsContainer.innerHTML = '';
+
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: queryInput.value }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch answer');
+                }
+
+                const data = await response.json();
+                const card = document.createElement('div');
+                card.className = 'suggestion-card';
+                card.innerHTML = `
+                    <p><strong>Answer:</strong> ${data.answer}</p>
+                    <div class="sources"><strong>Sources:</strong> ${data.sources.map(s => s.title || s.id).join(', ')}</div>
+                `;
+                suggestionsContainer.appendChild(card);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching the answer');
             } finally {
                 loading.style.display = 'none';
             }

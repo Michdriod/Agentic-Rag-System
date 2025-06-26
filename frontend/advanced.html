@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Agentic Workflow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Agentic Workflow</h1>
+        <div class="search-container">
+            <input type="text" id="advancedInput" placeholder="Enter your message...">
+            <button onclick="sendAdvancedMessage()">Send</button>
+        </div>
+        <div id="advancedMessages" class="suggestions-container"></div>
+        <div id="advancedLoading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing your message...</p>
+        </div>
+    </div>
+    <script>
+        let messageHistory = [];
+
+        function renderMessages() {
+            const container = document.getElementById('advancedMessages');
+            container.innerHTML = '';
+            messageHistory.forEach(msg => {
+                const card = document.createElement('div');
+                card.className = 'suggestion-card';
+                card.innerHTML = `<strong>${msg.role}:</strong> ${msg.content}`;
+                container.appendChild(card);
+            });
+        }
+
+        async function sendAdvancedMessage() {
+            const input = document.getElementById('advancedInput');
+            const loading = document.getElementById('advancedLoading');
+            if (!input.value.trim()) {
+                alert('Please enter a message');
+                return;
+            }
+            messageHistory.push({ role: 'user', content: input.value });
+            renderMessages();
+            input.value = '';
+            try {
+                loading.style.display = 'flex';
+                const response = await fetch('/advanced_query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: messageHistory })
+                });
+                if (!response.ok) throw new Error('Failed to process message');
+                const data = await response.json();
+                messageHistory = data.messages;
+                renderMessages();
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Enable Enter key to submit
+        document.getElementById('advancedInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendAdvancedMessage();
+            }
+        });
+    </script>
+</body>
+</html>

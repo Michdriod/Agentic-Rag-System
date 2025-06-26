@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("RAW_DATABASE_URL")
 
 # Example: Load documents from a directory and ingest into pgvector
 
@@ -22,7 +22,8 @@ def ingest_documents(directory: str, collection_name: str = "transaction_insight
         embedding=embeddings,
         connection_string=DATABASE_URL,
         collection_name=collection_name,
-        distance_strategy="cosine"
+        distance_strategy="cosine",
+        create_extension=False
     )
     print(f"Ingested {len(documents)} documents into pgvector collection '{collection_name}'")
 

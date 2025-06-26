@@ -26,8 +26,9 @@ async def generate_and_store_embeddings():
             # Generate embedding
             text_embedding = model.encode(record['description'])
             
-            # Convert numpy array to list and store in database
+            # Convert numpy array to list and from list to str in PostgreSQL format expected for a vector, then store in database
             embedding_list = text_embedding.tolist()
+            embedding_str = f"[{', '.join(str(x) for x in embedding_list)}]"
             
             # Update the record with the embedding
             await conn.execute(
@@ -36,7 +37,7 @@ async def generate_and_store_embeddings():
                 SET embedding = $1::vector(384)
                 WHERE id = $2
                 """,
-                embedding_list,
+                embedding_str,
                 record['id']
             )
             

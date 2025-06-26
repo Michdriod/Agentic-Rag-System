@@ -1,13 +1,67 @@
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.2
-python-dotenv==1.0.0
-asyncpg==0.29.0
-httpx==0.25.2
-sentence-transformers==2.2.2
-langgraph==0.0.11
-pgvector==0.2.3
-numpy>=1.26.0
-python-multipart==0.0.6
-langchain[groq]
+# fastapi==0.104.1
+# uvicorn==0.24.0
+# pydantic>=1.10.0
+# python-dotenv==1.0.0
+# asyncpg==0.29.0
+# httpx==0.25.2
+# sentence-transformers==2.2.2
+# langgraph==0.0.11
+# pgvector==0.2.3
+# numpy>=1.26.0
+# python-multipart==0.0.6
+# langchain[groq]
+# langchain-groq
+# langchain_community
+# transformers==4.29.2
+# huggingface_hub==0.15.1
+
+
+# fastapi==0.111.0
+# uvicorn==0.29.0
+# pydantic==2.7.1
+# python-dotenv==1.0.1
+# asyncpg==0.29.0
+# httpx==0.27.0
+# sentence-transformers==2.6.1
+# langgraph
+# pgvector==0.2.4
+# numpy==1.26.4
+# python-multipart==0.0.9
+
+# # LangChain ecosystem
+# langchain
+# langchain-community==0.0.38
+# langchain-core==0.1.53
+# langchain-groq==0.1.6
+
+# # Transformers and Hugging Face
+# transformers==4.41.1
+# huggingface_hub==0.23.0
+
+
+
+fastapi
+uvicorn
+pydantic
+python-dotenv
+asyncpg
+httpx
+sentence-transformers
+langgraph
+pgvector
+numpy #  download less than 2, - 1.26.4
+python-multipart
+
+# LangChain ecosystem
+langchain
+langchain-community
+langchain-core
 langchain-groq
+langgraph-supervisor
+
+# Transformers and Hugging Face
+transformers
+huggingface_hub
+
+psycopg2-binary
+
